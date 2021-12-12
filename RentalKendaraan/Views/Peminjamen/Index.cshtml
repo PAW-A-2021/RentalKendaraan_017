@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentalKendaraan.Models.Peminjaman>
+﻿@model PaginatedList<RentalKendaraan.Models.Peminjaman>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,19 +23,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayName("Tgl Peminjaman")
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]"> Tanggal Peminjaman</a>
             </th>
             <th>
-                @Html.DisplayName("model Biaya")
+                @Html.DisplayName("Biaya")
             </th>
             <th>
-                @Html.DisplayName("Customer")
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Id Customer</a>
             </th>
             <th>
-                @Html.DisplayName("Jaminan")
+                @Html.DisplayName("Id Jaminan")
             </th>
             <th>
-                @Html.DisplayName("Kendaraan")
+                @Html.DisplayName("Id Kendaraan")
             </th>
             <th></th>
         </tr>
@@ -51,13 +51,13 @@
                     @Html.DisplayFor(modelItem => item.Biaya)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdCustomerNavigation.NamaCustomer)
+                    @Html.DisplayFor(modelItem => item.IdCustomerNavigation.IdCustomer)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdJaminanNavigation.NamaJaminan)
+                    @Html.DisplayFor(modelItem => item.IdJaminanNavigation.IdJaminan)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdKendaraanNavigation.NamaKendaraan)
+                    @Html.DisplayFor(modelItem => item.IdKendaraanNavigation.IdKendaraan)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.IdPeminjaman"><i class="fa fa-marker fa-lg"></i></a> |
@@ -68,3 +68,23 @@
         }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasilPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
